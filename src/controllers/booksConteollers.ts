@@ -1,10 +1,17 @@
 import { connection } from "../configs/database.js";
 import { Request, Response } from "express";
 import { Book, BookUpadate } from "../protocols.js";
+import {
+    allBooks, 
+    newBook, 
+    updateBookStarted, 
+    updateBookFinished, 
+    deleteOneBook
+} from "../repositories/bookRepositories.js"
 
-export async function getAllBooks(req: Request, res: Response) {
+export async function getAllBooks(req: Request, res: Response) : Promise<Response<Book>> {
     try {
-        const books = await connection.query(`SELECT * FROM books;`);
+        const books = await allBooks(); 
         return res.status(200).send(books.rows);
     } catch (error) {
         console.log(error);
@@ -12,17 +19,11 @@ export async function getAllBooks(req: Request, res: Response) {
     }
 }
 
-export async function postNewBook(req: Request, res: Response) {
+export async function postNewBook(req: Request, res: Response) : Promise<Response> {
     const bodyBook = res.locals.bodyBook as Book
 
     try {
-        await connection.query(`
-            INSERT INTO 
-            books (title, author, genre, status) 
-            VALUES ($1, $2, $3, $4)
-            RETURNING id`,
-            [bodyBook.title, bodyBook.author, bodyBook.genre, bodyBook.status]);
-
+        await newBook(bodyBook);
         return res.sendStatus(201);
     } catch (error) {
         console.log(error);
@@ -30,14 +31,12 @@ export async function postNewBook(req: Request, res: Response) {
     }
 }
 
-export async function BookStarted(req: Request, res: Response) {
+export async function BookStarted(req: Request, res: Response) : Promise<Response> {
     const { id }= req.params;
     const bodyUpdate = res.locals.bodyUpdate as BookUpadate;
 
     try {
-        await connection.query(`UPDATE books SET "status" = $1, "startedIn" = NOW() WHERE id = $2`,
-        [bodyUpdate.status, id]);
-
+        await updateBookStarted(bodyUpdate, id);
         return res.sendStatus(201);
     } catch (error) {
         console.log(error);
@@ -45,6 +44,27 @@ export async function BookStarted(req: Request, res: Response) {
     }
 }
 
-export async function deleteBook(req: Request, res: Response) {
-    return res.send("delete ok");
+export async function BookFinished(req: Request, res: Response) : Promise<Response>{
+    const { id } = req.params;
+    const bodyUpdate = res.locals.bodyUpdate as BookUpadate;
+
+    try{
+        await updateBookFinished(id);
+        return res.sendStatus(201);
+    } catch (error){
+        console.log(error);
+        return res.sendStatus(500);
+    }
+}
+
+export async function deleteBook(req: Request, res: Response) : Promise<Response> {
+    const { id } = req.params;
+
+    try{
+        await deleteOneBook(id);
+        return res.sendStatus(200);
+    } catch(error){
+        console.log(error);
+        return res.sendStatus(500);
+    }
 }

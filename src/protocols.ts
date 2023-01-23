@@ -8,7 +8,5 @@ export type Book = {
 }
 
 export type BookUpadate ={
-    status: string,
-    startedIn: string,
-    finishedIn: string
+    status: string
 }
