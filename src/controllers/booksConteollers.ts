@@ -1,4 +1,3 @@
-import { connection } from "../configs/database.js";
 import { Request, Response } from "express";
 import { Book, BookUpadate } from "../protocols.js";
 import {
