@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Book, BookUpadate } from "../protocols.js";
+import { Book, BookUpadate, Genre } from "../protocols.js";
 import {
     allBooks, 
     newBook, 
@@ -9,8 +9,10 @@ import {
 } from "../repositories/bookRepositories.js"
 
 export async function getAllBooks(req: Request, res: Response) : Promise<Response<Book>> {
+    const { genre } = req.query as Genre;
+
     try {
-        const books = await allBooks(); 
+        const books = await allBooks(genre); 
         return res.status(200).send(books.rows);
     } catch (error) {
         console.log(error);

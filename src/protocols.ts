@@ -10,3 +10,7 @@ export type Book = {
 export type BookUpadate ={
     status: string
 }
+
+export type Genre = {
+    genre: string
+}

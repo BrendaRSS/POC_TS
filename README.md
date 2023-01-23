@@ -34,7 +34,7 @@ npm run dev
 
 - BODY: { "title": string, "author": string, "genre": string, "status": "not started" }
 
--> GET: /AllBooks
+-> GET: /AllBooks?genre=novels
 
 -> PATCH: /BookStarted/:id
 

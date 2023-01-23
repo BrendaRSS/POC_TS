@@ -2,10 +2,17 @@ import { QueryResult } from "pg";
 import { connection } from "../configs/database.js";
 import { Book, BookUpadate } from "../protocols.js";
 
-export async function allBooks() : Promise<QueryResult<Book>>{
-   return await connection.query(`
+export async function allBooks(genre : string) : Promise<QueryResult<Book>>{
+   if(genre){
+      return await connection.query(`
+      SELECT * FROM books WHERE genre = $1
+   `, [genre]);
+   } else {
+      return await connection.query(`
    SELECT * FROM books 
    ORDER BY id DESC;`);
+
+   }
 }
 
 export async function newBook(bodyBook : Book) : Promise<void>{

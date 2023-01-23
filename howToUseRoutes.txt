@@ -3,7 +3,7 @@ How to use routes
 POST: /NewBook
 BODY: { "title": string, "author": string, "genre": string, "status": "not started" }
 
-GET: /AllBooks
+GET: /AllBooks?genre=novels
 
 PATCH: /BookStarted/:id
 BODY: { "status": "reading"}
