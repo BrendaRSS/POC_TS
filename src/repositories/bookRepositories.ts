@@ -5,12 +5,12 @@ import { Book, BookUpadate } from "../protocols.js";
 export async function allBooks(genre : string) : Promise<QueryResult<Book>>{
    if(genre){
       return await connection.query(`
-      SELECT * FROM books WHERE genre = $1
-   `, [genre]);
+         SELECT * FROM books WHERE genre = $1
+         `, [genre]);
    } else {
       return await connection.query(`
-   SELECT * FROM books 
-   ORDER BY id DESC;`);
+         SELECT * FROM books 
+         ORDER BY id DESC;`);
 
    }
 }
