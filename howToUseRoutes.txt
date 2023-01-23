@@ -1,0 +1,14 @@
+How to use routes
+
+POST: /NewBook
+BODY: { "title": string, "author": string, "genre": string, "status": "not started" }
+
+GET: /AllBooks
+
+PATCH: /BookStarted/:id
+BODY: { "status": "reading"}
+
+PATCH: /BookFinished/:id
+BODY: { "status": "finished" }
+
+DELETE: /DeleteBook/:id
